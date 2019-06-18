@@ -350,3 +350,15 @@ end
 
 local m = max(10,20)
 print(m)
+
+function create_a_counter()
+    local count = 0
+    return function()
+        count = count + 1
+        return count
+    end
+end
+
+for i = 1,5 do
+    print(i)
+end
