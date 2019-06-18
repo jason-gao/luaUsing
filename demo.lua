@@ -351,6 +351,14 @@ end
 local m = max(10,20)
 print(m)
 
+
+--[[
+    create_a_counter()会返回一个匿名函数
+    （在Lua中，函数和其他数据一样，是可以指定给变量来存储的）。
+    这个匿名函数会把count加1后再回传。
+    在匿名函数中的变量count既不是全局变量也不是区域变量，而是一种称为external local variable（外部局部变量，又称upvalue）的变量。
+    这个变量的值会一直被保存在匿名函数中。因此调用create_a_counter()时产生一个记数器函数，每次调用记数器函数，都会得到一个比上次大1的值。
+--]]
 function create_a_counter()
     local count = 0
     return function()
