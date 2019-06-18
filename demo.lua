@@ -338,4 +338,15 @@ println()
 
 -- 函数
 
+local function max(a, b)
+    local temp = nil
+    if (a > b) then
+        temp = a
+    else
+        temp = b
+    end
+    return temp        
+end
 
+local m = max(10,20)
+print(m)
