@@ -108,6 +108,39 @@ print(corp["city"])
 print(corp.staff[1])
 print(corp[10])
 
+-- table 赋值
+
+-- 简单的 table
+mytable = {}
+print("mytable 的类型是 ",type(mytable))
+
+mytable[1]= "Lua"
+mytable["wow"] = "修改前"
+print("mytable 索引为 1 的元素是 ", mytable[1])
+print("mytable 索引为 wow 的元素是 ", mytable["wow"])
+
+-- alternatetable和mytable的是指同一个 table
+alternatetable = mytable
+
+print("alternatetable 索引为 1 的元素是 ", alternatetable[1])
+print("mytable 索引为 wow 的元素是 ", alternatetable["wow"])
+
+alternatetable["wow"] = "修改后"
+
+print("mytable 索引为 wow 的元素是 ", mytable["wow"])
+
+-- 释放变量
+alternatetable = nil
+print("alternatetable 是 ", alternatetable)
+
+-- mytable 仍然可以访问
+print("mytable 索引为 wow 的元素是 ", mytable["wow"])
+
+mytable = nil
+print("mytable 是 ", mytable)
+
+-- do return end
+
 --  function
 local function foo()
     print("in the function")
@@ -524,19 +557,20 @@ print(2, (init()))   -->output  2  1
 
 -- lua 版本 <= 5.1 unpack lua 版本 > 5.1 table.unpack
 
+-- unpack兼容写法
+unpack = unpack or table.unpack
+
 local info = {1,2,nil, 3,4,5,6}
 print(info[2])
 print(info[3])
 print(info[4])
-local a,b,c,d,e,f = table.unpack(info)
+local a,b,c,d,e,f = unpack(info)
 print(a,b,c,d,e,f)
 
 local info={1,2,3,nil,5,p=6}
-local a,b,c,d,e,f = table.unpack(info)
+local a,b,c,d,e,f = unpack(info)
 print(a,b,c,d,e,f)
 
--- unpack兼容写法
-unpack = unpack or table.unpack
 
 -- lua <= 5.1
 local function fun1(...)
@@ -549,7 +583,7 @@ fun1(1,nil,3) -- 1,nil,3
 
 local function fun2(...)
     local arg = { ... }
-    print("fun2", table.unpack(arg))
+    print("fun2", unpack(arg))
 end
 fun2(1,nil,3) -- 1,nil,3
 
@@ -578,6 +612,8 @@ do_action(attack, 1111)      -- output: targetId    1111
 
 
 my_module.greeting(1,2,3,4)
+
+do return end
 
 print(string.byte("abc", 1, 3))
 print(string.byte("abc", 3)) -- 缺少第三个参数，第三个参数默认与第二个相同，此时为 3
@@ -886,4 +922,209 @@ print(b.balance)  --> output: 50
 -- 继承
 -- 继承可以用元表实现，它提供了在父类中查找存在的方法和变量的机制。在 Lua 中是不推荐使用继承方式完成构造的，这样做引入的问题可能比解决的问题要多
 
+print(s_more.upper("hello"))
+print(s_more.lower("HELLO"))
+
+-- 成员私有
+function newAccount (initialBalance)
+    local self = {balance = initialBalance}
+    local withdraw = function (v)
+        self.balance = self.balance - v
+    end
+    local deposit = function (v)
+        self.balance = self.balance + v
+    end
+    local getBalance = function() return self.balance end 
+    return {
+        withdraw = withdraw,
+        deposit = deposit,
+        getBalance = getBalance
+    }                
+end
+
+a = newAccount(100)
+a.deposit(100)
+print(a.getBalance())
+print(a.balance)
+
+-- 作用域
+
+x = 10
+local i = 1         -- 程序块中的局部变量 i
+
+while i <=x do
+  local x = i * 2   -- while 循环体中的局部变量 x
+  print(x)          -- output： 2, 4, 6, 8, ...
+  i = i + 1
+end
+
+if i > 20 then
+  local x           -- then 中的局部变量 x
+  x = 20
+  print(x + 2)      -- 如果i > 20 将会打印 22，此处的 x 是局部变量
+else
+  print(x)          -- 打印 10，这里 x 是全局变量
+end
+
+print(x)            -- 打印 10
+
+-- 全局变量检测
+-- luacheck
+
+-- 数组大小
+-- test.lua
+local tblTest1 = { 1, a = 2, 3 }
+print("Test1 " .. #(tblTest1))
+
+local tblTest2 = { 1, nil }
+print("Test2 " .. #(tblTest2))
+
+local tblTest3 = { 1, nil, 2 }
+print("Test3 " .. #(tblTest3))
+
+local tblTest4 = { 1, nil, 2, nil }
+print("Test4 " .. #(tblTest4))
+
+local tblTest5 = { 1, nil, 2, nil, 3, nil }
+print("Test5 " .. #(tblTest5))
+
+local tblTest6 = { 1, nil, 2, nil, 3, nil, 4, nil }
+print("Test6 " .. #(tblTest6))  
+
+-- 非空判断
+local person = {name = "Bob", sex = "M"}
+
+person = nil
+
+-- print(person.name) ==error
+
+if person ~= nil and person.name ~= nil then
+    print(person.name)
+else
+    print("person nil or person.name nil") 
+end
+
+
+local next = next
+local a = {}
+local b = {name = "Bob", sex = "Male"}
+local c = {"Male", "Female"}
+local d = nil
+
+print(#a)
+print(#b)
+print(#c)
+-- print(#d)    -- error
+
+if a == nil then
+    print("a == nil")
+end
+
+if b == nil then
+    print("b == nil")
+end
+
+if c == nil then
+    print("c == nil")
+end
+
+if d== nil then
+    print("d == nil")
+end
+
+
+if next(a) == nil then
+    print("next(a) == nil")
+end
+
+if next(b) == nil then
+    print("next(b) == nil")
+end
+
+if next(c) == nil then
+    print("next(c) == nil")
+end
+
+-- if next(d) == nil then
+--     print("next(d) == nil")
+-- end
+
+
+local function isTableEmpty(t)
+    return t == nil or next(t) == nil
+end
+
+-- 正则
+local s = "hello world"
+local i, j = string.find(s, "hello")
+print(i, j) --> 1 5
+
+
+local s = "hello world from Lua"
+for w in string.gmatch(s, "%a+") do
+    print(w)
+end
+
+-- output :
+--    hello
+--    world
+--    from
+--    Lua
+
+local a = "Lua is cute"
+local b = string.gsub(a, "cute", "great")
+print(a) --> Lua is cute
+print(b) --> Lua is great
+
+print(string.gsub("a (enclosed (in) parentheses) line", "%b()", ""))
+
+local name = "^aH^ai"
+name = name:gsub("%^a", "")
+print(name)
+
+-- do return end
+
+-- 虚变量
+-- test.lua 文件
+local t = {1, 3, 5}
+
+print("all  data:")
+for i,v in ipairs(t) do
+    print(i,v)
+end
+
+print("")
+print("part data:")
+for _,v in ipairs(t) do
+    print(v)
+end
+
+
+local start, finish = string.find("hello", "he") --start 值为起始下标，finish
+                                                 --值为结束下标
+print ( start, finish )                          --输出 1   2
+
+local start = string.find("hello", "he")      -- start值为起始下标
+print ( start )                               -- 输出 1
+
+
+local _,finish = string.find("hello", "he")   --采用虚变量（即下划线），接收起
+                                              --始下标值，然后丢弃，finish接收
+                                              --结束下标值
+print ( finish )                              --输出 2
+print ( _ )                                   --输出 1, `_` 只是一个普通变量,我们习惯上不会读取它的值
+
+-- ffi
+-- https://moonbingbing.gitbooks.io/openresty-best-practices/lua/FFI.html
+
+-- luajit
+-- https://moonbingbing.gitbooks.io/openresty-best-practices/lua/what_jit.html
+-- http://wiki.luajit.org/NYI
+
+-- lua time
+local ct = os.time()
+print(ct)
+
+local date = os.date("%Y-%m-%d %H:%M:%S");
+print(date) 
 
