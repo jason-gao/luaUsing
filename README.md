@@ -1,9 +1,9 @@
 # env
 - macos mojave 10.14.4 (18E226)
-vs code 版本 1.35.1 (1.35.1) 
-vs code 默认不是自动保存，file-auto save 打开，否则 lua xx.lua 啥也不输出，别被坑哭～～
-lua version 5.3.5
-luajit 2.0.5 兼容lua5.1
+- vs code 版本 1.35.1 (1.35.1) 
+- vs code 默认不是自动保存，file-auto save 打开，否则 lua xx.lua 啥也不输出，别被坑哭～～
+- lua version 5.3.5
+- luajit 2.0.5 兼容lua5.1
 
 
 
