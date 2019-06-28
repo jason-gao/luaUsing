@@ -17,6 +17,10 @@ brew install lua
 - https://wiki.jikexueyuan.com/project/lua/overview.html
 - https://aillieo.cn/post/2018-06-24-lua-notes-02/
 - https://luarocks.org/
+- http://luajit.org/ext_ffi_api.html
+- lua-resty开头的库是跑在nginx里的,lua-*开头的是通用的，像lua-cjson这种只要是lua就能跑
+- 单独用的话要用ffi.load手动加载openssl库
+- luajit自带ffi
 
 
 # luaUsing
@@ -39,5 +43,18 @@ if table.unpack then unpack = table.unpack end
 
 - luarocks
 - brew install luarocks
-
 - luarocks install luacrypto OPENSSL_DIR=/usr/local/Cellar/openssl/1.0.2r
+
+```text
+brew upgrade openssl
+If you need to have curl-openssl first in your PATH run:
+  echo 'export PATH="/usr/local/opt/curl-openssl/bin:$PATH"' >> ~/.bash_profile
+
+For compilers to find curl-openssl you may need to set:
+  export LDFLAGS="-L/usr/local/opt/curl-openssl/lib"
+  export CPPFLAGS="-I/usr/local/opt/curl-openssl/include"
+
+For pkg-config to find curl-openssl you may need to set:
+  export PKG_CONFIG_PATH="/usr/local/opt/curl-openssl/lib/pkgconfig"
+
+```
