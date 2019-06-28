@@ -2,9 +2,15 @@ local _M = {}
 
 local mt = {__index = _M}
 
+
+local function test(self, v)
+    print("vvv", v)
+end   
+
 function _M.deposit( self ,v)
     -- body
     self.balance = self.balance + v
+    test(self, v)
 end
 
 function _M.withdraw( self, v )
@@ -16,6 +22,7 @@ function _M.withdraw( self, v )
     end            
 end
 
+ 
 function _M.new(self, balance)
     balance = balance or 0
     return setmetatable({balance = balance}, mt)

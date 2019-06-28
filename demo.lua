@@ -613,7 +613,7 @@ do_action(attack, 1111)      -- output: targetId    1111
 
 my_module.greeting(1,2,3,4)
 
-do return end
+-- do return end
 
 print(string.byte("abc", 1, 3))
 print(string.byte("abc", 3)) -- 缺少第三个参数，第三个参数默认与第二个相同，此时为 3
@@ -918,6 +918,8 @@ b:deposit(50)
 
 print(a.balance)  --> output: 100
 print(b.balance)  --> output: 50
+
+do return end
 
 -- 继承
 -- 继承可以用元表实现，它提供了在父类中查找存在的方法和变量的机制。在 Lua 中是不推荐使用继承方式完成构造的，这样做引入的问题可能比解决的问题要多
