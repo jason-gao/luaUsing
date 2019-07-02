@@ -681,6 +681,7 @@ print(string.sub("Hello Lua", -3, -1))
 
 print(string.gsub("Lua Lua Lua", "Lua", "hello"))
 print(string.gsub("Lua Lua Lua", "Lua", "hello", 2)) --指明第四个参数
+-- do return end 
 
 print(string.reverse("Hello Lua"))  --> output: auL olleH
 
@@ -919,7 +920,7 @@ b:deposit(50)
 print(a.balance)  --> output: 100
 print(b.balance)  --> output: 50
 
-do return end
+-- do return end
 
 -- 继承
 -- 继承可以用元表实现，它提供了在父类中查找存在的方法和变量的机制。在 Lua 中是不推荐使用继承方式完成构造的，这样做引入的问题可能比解决的问题要多
@@ -1130,3 +1131,18 @@ print(ct)
 local date = os.date("%Y-%m-%d %H:%M:%S");
 print(date) 
 
+
+-- 
+local function buildUrl(url)
+    if not url then
+        ngx.say("request url is empty")
+    end
+
+    if (string.find(url, "http://")) ~= nil or (string.find(url, "https://")) ~= nil then
+        return url
+    else
+        return "aa"..url    
+    end                 
+end
+
+print(buildUrl("http://aaa"))
